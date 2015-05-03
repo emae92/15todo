@@ -1,4 +1,4 @@
-@extends('content')
+@extends('app')
 
 @section('content')
     <h2>Edit Project</h2>
