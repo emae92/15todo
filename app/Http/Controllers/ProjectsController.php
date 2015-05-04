@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class ProjectsController extends Controller {
 
+    protected $rules = [
+        'name' => ['required', 'min:3'],
+        'slug' => ['required'],
+    ];
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -35,10 +40,13 @@ class ProjectsController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 *
+     * @param \Illuminate\Http\Request $request
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
+            $this->validate($request, $this->rules);
+
 		    $input = Input::all();
             Project::create( $input );
 
@@ -48,7 +56,7 @@ class ProjectsController extends Controller {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  \App\Project $project
 	 * @return Response
 	 */
 	public function show(Project $project)
@@ -59,7 +67,7 @@ class ProjectsController extends Controller {
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param   \App\Project $project
 	 * @return Response
 	 */
 	public function edit(Project $project)
@@ -70,11 +78,14 @@ class ProjectsController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param   \App\Project $project
+     * @param   \Illuminate\Http\Request $request
 	 * @return Response
 	 */
-	public function update(Project $project)
+	public function update(Project $project, Request $request)
     {
+            $this->validate($request, $this->rules);
+
             $input = array_except(Input::all(), '_method');
             $project->update($input);
 
@@ -84,7 +95,7 @@ class ProjectsController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param   \App\Project $project
 	 * @return Response
 	 */
 	public function destroy(Project $project)
